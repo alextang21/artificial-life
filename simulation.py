@@ -1,3 +1,4 @@
+from pyrosim.neuralNetwork import NEURAL_NETWORK
 import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
@@ -26,8 +27,11 @@ class SIMULATION:
 		for i in range(c.iterations):
 			p.stepSimulation()
 			self.robot.Sense(i)
+			self.robot.Think()
 			self.robot.Act(i)
 			time.sleep(1/600)
+
+
 	def __del__(self):
 		# for sensor in self.robot.sensors:
 		# 	self.robot.sensors[sensor].Save_Values()
