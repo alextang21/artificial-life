@@ -8,3 +8,4 @@ offset = 0
 iterations = 2000
 legForce = 200
 numberOfGenerations = 10
+populationSize = 10
