@@ -40,7 +40,7 @@ class PARALLEL_HILL_CLIMBER:
 		self.Spawn()
 		self.Mutate()
 		self.Evaluate(self.children)
-		self.Print()
+		# self.Print()
 		self.Select()
 
 	def Evaluate(self,solutions):
@@ -53,6 +53,7 @@ class PARALLEL_HILL_CLIMBER:
 		self.Evaluate(self.parents)
 		for currentGeneration in range(c.numberOfGenerations):
 			self.Evolve_For_One_Generation()
+		self.Print()
 
 	def Print(self):
 		print("\n")
