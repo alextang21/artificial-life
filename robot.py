@@ -18,6 +18,7 @@ class ROBOT:
 		# os.system("rm brain" + str(ID) + ".nndf")
 		self.motors = {}
 		self.robotId = p.loadURDF("body.urdf")
+		self.lowerSensors = ["BackLowerLeg", "FrontLowerLeg", "LeftLowerLeg", "RightLowerLeg"]
 		pyrosim.Prepare_To_Simulate(self.robotId)
 		self.Prepare_To_Sense()
 		self.Prepare_To_Act()
@@ -28,8 +29,8 @@ class ROBOT:
 			self.sensors[linkName] = s.SENSOR(linkName)
 
 	def Sense(self,i):
-		for sensor in self.sensors:
-			self.sensors[sensor].Get_Value(i)
+		for sensor in self.lowerSensors:
+			self.sensors[sensor].Count_Value(i)
 
 	def Prepare_To_Act(self):
 		self.motors = {}
@@ -44,11 +45,15 @@ class ROBOT:
 				self.motors[bytes(jointName, encoding='utf-8')].Set_Value(self, desiredAngle * c.motorJointRange)
 
 	def Get_Fitness(self):
-		basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
-		basePosition = basePositionAndOrientation[0]
-		xPosition = basePosition[0]
+		
+		meanTime = 0
+		for i in self.lowerSensors:
+			meanTime += numpy.mean(self.sensors[i].counter)
+		# basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
+		# basePosition = basePositionAndOrientation[0]
+		# xPosition = basePosition[0]
 		f = open("tmp" + str(self.fileID) + ".txt", "w")
-		f.write(str(xPosition))
+		f.write(str(meanTime))
 		f.close()
 		os.system("mv tmp" + str(self.fileID) + ".txt fitness" + str(self.fileID) + ".txt")
 		# f = open("fitness" + str(self.fileID) + ".txt", "w")
