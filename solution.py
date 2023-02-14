@@ -49,18 +49,22 @@ class SOLUTION:
 
 	def Generate_Body(self):
 		pyrosim.Start_URDF(f"body{self.myID}.urdf")
-		pyrosim.Send_Cube(name="Torso", pos=[0,0,0.5] , size=[1,0.5,0.5], color="Black", colorRGBA=[0,0,0,1.0])
-		pyrosim.Send_Joint(name="Torso_BackLeg1", parent="Torso", child="BackLeg1", type="revolute", position=[-0.5,0,0.5], jointAxis = "0 0 1")
-		pyrosim.Send_Cube(name="BackLeg1", pos=[-0.5,0,0] , size=[1,0.5,0.5], color="Cyan", colorRGBA=[0,1.0,1.0,1.0])
-		pyrosim.Send_Joint(name="Torso_FrontLeg1", parent="Torso", child="FrontLeg1", type="revolute", position=[0.5,0,0.5], jointAxis = "0 0 1")
-		pyrosim.Send_Cube(name="FrontLeg1", pos=[0.5,0,0] , size=[1,0.5,0.5], color="Cyan", colorRGBA=[0,1.0,1.0,1.0])
+		sizes = numpy.random.rand(3) * random.randint(1,2) + 1
+		pyrosim.Send_Cube(name="Torso", pos=sizes/2 , size=sizes, color="Blue", colorRGBA=[0,0,1.0,1.0])
+		pyrosim.Send_Joint(name="Torso_BackLeg1", parent="Torso", child="BackLeg1", type="revolute", position=[-sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
+		pyrosim.Send_Cube(name="BackLeg1", pos=sizes/2 , size=sizes, color="Green", colorRGBA=[0,1.0,0,1.0])
+		pyrosim.Send_Joint(name="Torso_FrontLeg1", parent="Torso", child="FrontLeg1", type="revolute", position=[sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
+		pyrosim.Send_Cube(name="FrontLeg1", pos=sizes/2 , size=sizes, color="Green", colorRGBA=[0,1.0,0,1.0])
 		for i in range(1, self.numMotorNeurons-1):
-			if i % 2 == 1:
-				pyrosim.Send_Joint(name=f"FrontLeg{i}_FrontLeg{i+1}", parent=f"FrontLeg{i}", child=f"FrontLeg{i+1}", type="revolute", position=[1,0,0], jointAxis = "0 0 1")
-				pyrosim.Send_Cube(name=f"FrontLeg{i+1}", pos=[0.5,0,0] , size=[1,0.5,0.5], color="Black", colorRGBA=[0,0,0,1.0])
+			sensor = random.randint(0,7)
+			sizes = numpy.random.rand(3) * random.randint(1,2) + 1
+			if sensor < 4:
+				pyrosim.Send_Cube(name=f"FrontLeg{i+1}", pos=sizes/2 , size=sizes, color="Blue", colorRGBA=[0,0,1.0,1.0])
+				pyrosim.Send_Joint(name=f"FrontLeg{i}_FrontLeg{i+1}", parent=f"FrontLeg{i}", child=f"FrontLeg{i+1}", type="revolute", position=[sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
 			else:
-				pyrosim.Send_Joint(name=f"FrontLeg{i}_FrontLeg{i+1}", parent=f"FrontLeg{i}", child=f"FrontLeg{i+1}", type="revolute", position=[1,0,0], jointAxis = "0 0 1")
-				pyrosim.Send_Cube(name=f"FrontLeg{i+1}", pos=[0.5,0,0] , size=[1,0.5,0.5], color="Cyan", colorRGBA=[0,1.0,1.0,1.0])
+				pyrosim.Send_Cube(name=f"FrontLeg{i+1}", pos=sizes/2 , size=sizes, color="Green", colorRGBA=[0,1.0,0,1.0])
+				pyrosim.Send_Joint(name=f"FrontLeg{i}_FrontLeg{i+1}", parent=f"FrontLeg{i}", child=f"FrontLeg{i+1}", type="revolute", position=[sizes[0]/2,sizes[0]/2,0], jointAxis = "0 0 1")
+				
 				
 		# pyrosim.Send_Joint(name="FrontLeg1_FrontLeg2", parent="FrontLeg1", child="FrontLeg2", type="revolute", position=[1,0,0], jointAxis = "0 0 1")
 		# pyrosim.Send_Cube(name="FrontLeg2", pos=[0.5,0,0] , size=[1,0.5,0.5], color="Black", colorRGBA=[0,0,0,1.0])
