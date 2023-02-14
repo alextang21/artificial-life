@@ -14,7 +14,7 @@ class SENSOR:
 		self.counter = numpy.zeros(c.iterations)
 
 	def Get_Value(self,i):
-		self.values[i] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName)
+		self.values[i] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName) * numpy.sin(2*i)
 	
 	def Count_Value(self,i):
 		self.counter[i] = pyrosim.Get_Touch_Sensor_Value_For_Link(self.linkName)
