@@ -48,14 +48,24 @@ class SOLUTION:
 		pyrosim.End()
 
 	def Generate_Body(self):
+		# limbs is a dictionary
+		num_limbs = [i for i in range(random.randint(1,10))]
+		sensors = numpy.random.randint(2, size = len(num_limbs))
+		colors = {0: ["Blue", [0,0,1.0,1.0]], 1: ["Green", [0,1.0,0,1.0]]}
+		# limbs: key is the number ID of the limb, value is a list with [sensor?, size[], color, colorRGBA]
+		limbs = {0: [sensors[0], numpy.random.rand(3) * random.randint(1,2) + 1, colors[sensors[0]][0], colors[sensors[0]][1]]}
 		pyrosim.Start_URDF(f"body{self.myID}.urdf")
-		sizes = numpy.random.rand(3) * random.randint(1,2) + 1
-		pyrosim.Send_Cube(name="Torso", pos=sizes/2 , size=sizes, color="Blue", colorRGBA=[0,0,1.0,1.0])
-		pyrosim.Send_Joint(name="Torso_BackLeg1", parent="Torso", child="BackLeg1", type="revolute", position=[-sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
-		pyrosim.Send_Cube(name="BackLeg1", pos=sizes/2 , size=sizes, color="Green", colorRGBA=[0,1.0,0,1.0])
+		# sizes = limbs[id][1]
+		pyrosim.Send_Cube(name="FrontLeg0", pos=limbs[0][1]/2 , size=limbs[0][1], color=limbs[0][2], colorRGBA=limbs[0][3])
+		pyrosim.Send_Joint(name="FrontLeg0_FrontLeg1", parent="FrontLeg0", child="FrontLeg1",  type="revolute", position=[sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
+		pyrosim.Send_Cube(name="FrontLeg1", pos=limbs[1][1]/2 , size=limbs[1][1], color=limbs[1][2], colorRGBA=limbs[1][3])
+		pyrosim.Send_Joint(name="FrontLeg1_FrontLeg2", parent="FrontLeg1", child="FrontLeg2",  type="revolute", position=[sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
+		pyrosim.Send_Cube(name="FrontLeg2", pos=limbs[2][1]/2 , size=limbs[2][1], color=limbs[2][2], colorRGBA=limbs[2][3])
+		pyrosim.Send_Joint(name="FrontLeg2_FrontLeg3", parent="FrontLeg2", child="FrontLeg3",  type="revolute", position=[sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
+		pyrosim.Send_Cube(name="FrontLeg1", pos=sizes/2 , size=sizes, color="Green", colorRGBA=[0,1.0,0,1.0])
 		pyrosim.Send_Joint(name="Torso_FrontLeg1", parent="Torso", child="FrontLeg1", type="revolute", position=[sizes[0]/2,sizes[1]/2,0], jointAxis = "0 0 1")
 		pyrosim.Send_Cube(name="FrontLeg1", pos=sizes/2 , size=sizes, color="Green", colorRGBA=[0,1.0,0,1.0])
-		for i in range(1, self.numMotorNeurons-1):
+		for i in range(0, self.numMotorNeurons-1):
 			sensor = random.randint(0,7)
 			sizes = numpy.random.rand(3) * random.randint(1,2) + 1
 			if sensor < 4:
