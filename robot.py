@@ -17,7 +17,7 @@ class ROBOT:
 		self.nn = NEURAL_NETWORK("brain" + str(ID) + ".nndf")
 		# os.system("rm brain" + str(ID) + ".nndf")
 		self.motors = {}
-		self.robotId = p.loadURDF(f"body{ID}.urdf")
+		self.robotId = p.loadURDF(f"body{ID}.urdf", flags=p.URDF_USE_SELF_COLLISION)
 		# self.lowerSensors = ["BackLowerLeg", "FrontLowerLeg", "LeftLowerLeg", "RightLowerLeg"]
 		pyrosim.Prepare_To_Simulate(self.robotId)
 		self.Prepare_To_Sense()
