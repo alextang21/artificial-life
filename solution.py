@@ -10,12 +10,17 @@ import constants as c
 class SOLUTION:
 	def __init__(self, myID, parentID):
 		random.seed(parentID)
+		numpy.random.seed(parentID)
 		self.limbs = {}
 		self.num_limbs = [i for i in range(random.randint(2,5)*4+1)]
 		self.sensors = numpy.random.randint(2, size = len(self.num_limbs))
 		self.motors = numpy.random.randint(2, size = len(self.num_limbs))
 		self.colors = {0: ["Blue", [0,0,1.0,1.0]], 1: ["Green", [0,1.0,0,1.0]]}
 		self.motors[0] = 0
+
+		self.limbs[0] = [self.sensors[0], self.motors[0], [3,2,1], self.colors[self.sensors[0]][0], self.colors[self.sensors[0]][1]]
+		for i in range(1, len(self.num_limbs)):
+			self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3 + 0.4, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
 		
 		self.weights = numpy.random.rand(numpy.count_nonzero(self.sensors == 1), numpy.count_nonzero(self.motors == 1))
 		self.weights = self.weights * 2 - 1
@@ -36,18 +41,41 @@ class SOLUTION:
 		f = open("fitness" + str(self.myID) + ".txt", "r")
 		self.fitness = float(f.read())
 		f.close()
-		os.system("rm fitness" + str(self.myID) + ".txt")
+		# os.system("rm fitness" + str(self.myID) + ".txt")
 
 	def Evaluate(self, directOrGUI):
 		self.Start_Simulation(directOrGUI)
 		self.Wait_For_Simulation_To_End()
 
 	def Mutate(self):
-		i = random.randint(1,len(self.num_limbs)-1)
-		# self.sensors[i] = random.randint(0,1)
-		# self.motors[i] = random.randint(0,1)
-		self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3+0.2, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
-		# self.weights[random.randint(0,numpy.count_nonzero(self.sensors == 1)-1)][random.randint(0,numpy.count_nonzero(self.motors == 1)-1)] = random.random() * 2 - 1
+
+		limbChange = random.randint(0,2)
+		if limbChange == 0:
+			i = random.randint(1,len(self.num_limbs)-1)
+			self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3+0.2, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
+			self.weights[random.randint(0,numpy.count_nonzero(self.sensors == 1)-1)][random.randint(0,numpy.count_nonzero(self.motors == 1)-1)] = random.random() * 2 - 1
+		
+		if limbChange == 1:
+			for i in range(len(self.limbs)-4, len(self.limbs)):
+				self.limbs.pop(i)
+				self.num_limbs.pop()
+				self.sensors = numpy.delete(self.sensors,-1)
+				self.motors = numpy.delete(self.motors,-1)
+			self.weights = numpy.random.rand(numpy.count_nonzero(self.sensors == 1), numpy.count_nonzero(self.motors == 1))
+			self.weights = self.weights * 2 - 1
+
+		elif limbChange == 2:
+			for i in range(len(self.limbs), len(self.limbs)+4):
+				self.sensors = numpy.append(self.sensors,random.randint(0,1))
+				self.motors = numpy.append(self.motors,random.randint(0,1))
+				self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3 + 0.4, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
+				self.num_limbs.append(i)
+			self.weights = numpy.random.rand(numpy.count_nonzero(self.sensors == 1), numpy.count_nonzero(self.motors == 1))
+			self.weights = self.weights * 2 - 1
+			
+		self.Generate_Body()
+		self.Generate_Brain()
+			
 
 	def Set_ID(self, ID):
 		self.myID = ID
@@ -59,9 +87,6 @@ class SOLUTION:
 
 	def Generate_Body(self):
 
-		self.limbs[0] = [self.sensors[0], self.motors[0], [3,2,1], self.colors[self.sensors[0]][0], self.colors[self.sensors[0]][1]]
-		for i in range(1, len(self.num_limbs)):
-			self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3 + 0.4, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
 		start_z = 0.0
 		for i in self.limbs:
 			start_z += self.limbs[i][2][2]
@@ -74,10 +99,7 @@ class SOLUTION:
 		pyrosim.Send_Joint(name=f"Segment0_Segment2", parent=f"Segment0", child=f"Segment2",  type="revolute", position=[-self.limbs[0][2][0]/2,-self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[2][2][2]/2)], jointAxis = "0 1 0")
 		pyrosim.Send_Joint(name=f"Segment0_Segment3", parent=f"Segment0", child=f"Segment3",  type="revolute", position=[self.limbs[0][2][0]/2,-self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[3][2][2]/2)], jointAxis = "0 1 0")
 		pyrosim.Send_Joint(name=f"Segment0_Segment4", parent=f"Segment0", child=f"Segment4",  type="revolute", position=[self.limbs[0][2][0]/2,self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[4][2][2]/2)], jointAxis = "0 1 0")
-		# directions = numpy.array([0,0,0])
 		for i in range(1,len(self.num_limbs)-4):
-			directions = numpy.random.randint(2, size = 3)
-			# directions = numpy.array([0,0,0])
 			if i % 2 == 0:
 				pyrosim.Send_Cube(name=f"Segment{i}", pos=[0,0,0], size=self.limbs[i][2], color=self.limbs[i][3], colorRGBA=self.limbs[i][4])
 				pyrosim.Send_Joint(name=f"Segment{i}_Segment{i+4}", parent=f"Segment{i}", child=f"Segment{i+4}",  type="revolute", position=[self.limbs[i][2][0]/2,-self.limbs[i][2][1]/2,-self.limbs[i][2][2]/2-(self.limbs[i+4][2][2]/2)] * numpy.array([0,0,1]), jointAxis = "0 1 0")

@@ -1,0 +1,372 @@
+<robot name = "robot">
+    <link name="Segment0">
+        <inertial>
+            <origin xyz="0 0 3.080382575464659" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 3.080382575464659" rpy="0 0 0"/>
+            <geometry>
+                <box size="3 2 1" />
+            </geometry>
+            <material name="Blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 3.080382575464659" rpy="0 0 0"/>
+            <geometry>
+                <box size="3 2 1" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment0_Segment1" type="revolute">
+       <parent link="Segment0"/>
+       <child  link="Segment1"/>
+       <origin rpy="0 0 0" xyz="-1.5 1.0 2.341698712778548" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <joint name="Segment0_Segment2" type="revolute">
+       <parent link="Segment0"/>
+       <child  link="Segment2"/>
+       <origin rpy="0 0 0" xyz="-1.5 -1.0 2.3583174806528597" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <joint name="Segment0_Segment3" type="revolute">
+       <parent link="Segment0"/>
+       <child  link="Segment3"/>
+       <origin rpy="0 0 0" xyz="1.5 -1.0 2.1493366026936602" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <joint name="Segment0_Segment4" type="revolute">
+       <parent link="Segment0"/>
+       <child  link="Segment4"/>
+       <origin rpy="0 0 0" xyz="1.5 1.0 2.2896077391260183" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment1">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.4249734317636287 0.326565530284032 0.4773677253722225" />
+            </geometry>
+            <material name="Blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.4249734317636287 0.326565530284032 0.4773677253722225" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment1_Segment5" type="revolute">
+       <parent link="Segment1"/>
+       <child  link="Segment5"/>
+       <origin rpy="0 0 0" xyz="0.0 0.0 -0.47567684334147486" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment2">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.462149832993168 0.3591633042861768 0.44413018962359885" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.462149832993168 0.3591633042861768 0.44413018962359885" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment2_Segment6" type="revolute">
+       <parent link="Segment2"/>
+       <child  link="Segment6"/>
+       <origin rpy="0 0 0" xyz="0.0 -0.0 -0.7473969023027773" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment3">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6767341313400465 0.5890167211808792 0.8620919455419975" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6767341313400465 0.5890167211808792 0.8620919455419975" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment3_Segment7" type="revolute">
+       <parent link="Segment3"/>
+       <child  link="Segment7"/>
+       <origin rpy="0 0 0" xyz="0.0 0.0 -0.9129629298687252" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment4">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5468179058902465 0.4522892461583211 0.5815496726772816" />
+            </geometry>
+            <material name="Blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5468179058902465 0.4522892461583211 0.5815496726772816" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment4_Segment8" type="revolute">
+       <parent link="Segment4"/>
+       <child  link="Segment8"/>
+       <origin rpy="0 0 0" xyz="0.0 -0.0 -0.6704872205114514" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment5">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6601049215037891 0.5021211774587266 0.4739859613107272" />
+            </geometry>
+            <material name="Blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6601049215037891 0.5021211774587266 0.4739859613107272" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment5_Segment9" type="revolute">
+       <parent link="Segment5"/>
+       <child  link="Segment9"/>
+       <origin rpy="0 0 0" xyz="0.0 0.0 -0.4745020647953356" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment6">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6586475050370992 1.0242557665736203 1.050663614981956" />
+            </geometry>
+            <material name="Blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.6586475050370992 1.0242557665736203 1.050663614981956" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment6_Segment10" type="revolute">
+       <parent link="Segment6"/>
+       <child  link="Segment10"/>
+       <origin rpy="0 0 0" xyz="0.0 -0.0 -0.8223688840000564" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment7">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.8482557839418758 1.0018894056922654 0.9638339141954528" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.8482557839418758 1.0018894056922654 0.9638339141954528" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment7_Segment11" type="revolute">
+       <parent link="Segment7"/>
+       <child  link="Segment11"/>
+       <origin rpy="0 0 0" xyz="0.0 0.0 -0.9687615947467019" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment8">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.857280535898669 0.7915361315135272 0.759424768345621" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.857280535898669 0.7915361315135272 0.759424768345621" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Segment8_Segment12" type="revolute">
+       <parent link="Segment8"/>
+       <child  link="Segment12"/>
+       <origin rpy="0 0 0" xyz="0.0 -0.0 -0.6723715530473443" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="Segment9">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5859469207961503 0.5205215876875261 0.475018168279944" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5859469207961503 0.5205215876875261 0.475018168279944" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="Segment10">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.671120462525135 0.2492738649706984 0.5940741530181568" />
+            </geometry>
+            <material name="Blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.671120462525135 0.2492738649706984 0.5940741530181568" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="Segment11">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5945285161502885 0.7051242662153187 0.973689275297951" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5945285161502885 0.7051242662153187 0.973689275297951" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="Segment12">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.7908352696452143 0.5889919082881399 0.5853183377490676" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0 1.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.7908352696452143 0.5889919082881399 0.5853183377490676" />
+            </geometry>
+        </collision>
+    </link>
+</robot>

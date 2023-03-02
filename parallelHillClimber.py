@@ -23,8 +23,8 @@ class PARALLEL_HILL_CLIMBER:
 			self.parents[i] = s.SOLUTION(self.nextAvailableID, parentID)
 			self.nextAvailableID += 1
 			parentID += 1
-		self.fitnessMatrix = numpy.zeros((c.numberOfGenerations+1,c.populationSize))
-		self.best = numpy.zeros((c.numberOfGenerations+1, len(self.parents)))
+		self.fitnessMatrix = numpy.zeros((c.populationSize,c.numberOfGenerations+1))
+		self.best = numpy.zeros((c.populationSize,c.numberOfGenerations+1))
 		# self.bestMatrix = numpy.zeros((c.numberOfGenerations, c.populationSize))
 
 
@@ -43,15 +43,15 @@ class PARALLEL_HILL_CLIMBER:
 	def Select(self):
 		for i in self.parents:
 			if self.currentGeneration == 0:
-				self.best[self.currentGeneration][i] = min(self.parents[i].fitness, self.children[i].fitness) * -1
+				self.best[i][self.currentGeneration] = min(self.parents[i].fitness, self.children[i].fitness) * -1
 			if self.parents[i].fitness > self.children[i].fitness:
 				self.parents[i] = self.children[i]
-			if self.parents[i].fitness < self.best[self.currentGeneration][i]*-1:
-				self.best[self.currentGeneration][i] = self.parents[i].fitness * -1
+			if self.parents[i].fitness < self.best[i][self.currentGeneration-1]*-1:
+				self.best[i][self.currentGeneration] = self.parents[i].fitness * -1
 			else:
-				self.best[self.currentGeneration][i] = self.best[self.currentGeneration-1][i]
+				self.best[i][self.currentGeneration] = self.best[i][self.currentGeneration-1]
 
-			self.fitnessMatrix[self.currentGeneration][i] = self.best[self.currentGeneration][i]
+			self.fitnessMatrix[i][self.currentGeneration] = self.best[i][self.currentGeneration]
 
 
 		
@@ -89,7 +89,9 @@ class PARALLEL_HILL_CLIMBER:
 			if self.parents[i].fitness < bestFitness:
 				best = self.parents[i]
 				bestFitness = self.parents[i].fitness
-			plt.plot(range(c.numberOfGenerations), self.fitnessMatrix[:][i])
+			print(max(self.fitnessMatrix[i]))
+			# plt.plot(range(c.numberOfGenerations), numpy.linspace(0,max(self.fitnessMatrix[i]), c.numberOfGenerations))
+			plt.plot(range(c.numberOfGenerations), self.fitnessMatrix[i][:-1])
 			legend.append(f"Seed {i+1}")
 		print(self.fitnessMatrix[:])
 		best.Start_Simulation("GUI")
