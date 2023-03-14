@@ -11,7 +11,8 @@ import constants as c
 import solution as s
 
 class PARALLEL_HILL_CLIMBER:
-	def __init__(self):
+	def __init__(self,seed):
+		self.seed = seed
 		os.system("rm brain*.nndf")
 		os.system("rm body*.urdf")
 		os.system("rm fitness*.txt")
@@ -20,7 +21,7 @@ class PARALLEL_HILL_CLIMBER:
 		self.currentGeneration = 0
 		parentID = 0
 		for i in range(c.populationSize):
-			self.parents[i] = s.SOLUTION(self.nextAvailableID, parentID)
+			self.parents[i] = s.SOLUTION(self.nextAvailableID, seed)
 			self.nextAvailableID += 1
 			parentID += 1
 		self.fitnessMatrix = numpy.zeros((c.populationSize,c.numberOfGenerations+1))
@@ -84,22 +85,23 @@ class PARALLEL_HILL_CLIMBER:
 	def Show_Best(self):
 		bestFitness = float("inf")
 		best = None
-		legend = []
+		# legend = []
 		for i in self.parents:
 			if self.parents[i].fitness < bestFitness:
 				best = self.parents[i]
 				bestFitness = self.parents[i].fitness
-			print(max(self.fitnessMatrix[i]))
+			# print(max(self.fitnessMatrix[i]))
 			# plt.plot(range(c.numberOfGenerations), numpy.linspace(0,max(self.fitnessMatrix[i]), c.numberOfGenerations))
-			plt.plot(range(c.numberOfGenerations), self.fitnessMatrix[i][:-1])
-			legend.append(f"Seed {i+1}")
-		print(self.fitnessMatrix[:])
+			# plt.plot(range(c.numberOfGenerations), self.fitnessMatrix[i][:-1])
+			# legend.append(f"Seed {i+1}")
+		with open("fitnesses.npy", "wb") as file:
+			numpy.save("fitnesses.npy", self.fitnessMatrix[:])
 		best.Start_Simulation("GUI")
-		plt.xlabel('Generation Number')
-		plt.ylabel('Fitness')
-		plt.title('Fitness vs. Generation Number')
-		plt.legend(legend)
-		plt.show()
+		# plt.xlabel('Generation Number')
+		# plt.ylabel('Fitness')
+		# plt.title('Fitness vs. Generation Number')
+		# plt.legend(legend)
+		# plt.show()
 
 
 

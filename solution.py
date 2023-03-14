@@ -8,11 +8,11 @@ import os
 import constants as c
 
 class SOLUTION:
-	def __init__(self, myID, parentID):
-		random.seed(parentID)
-		numpy.random.seed(parentID)
+	def __init__(self, myID, seed):
+		# random.seed(seed)
+		# numpy.random.seed(seed)
 		self.limbs = {}
-		self.num_limbs = [i for i in range(random.randint(2,5)*4+1)]
+		self.num_limbs = [i for i in range(random.randint(3,5)*4+1)]
 		self.sensors = numpy.random.randint(2, size = len(self.num_limbs))
 		self.motors = numpy.random.randint(2, size = len(self.num_limbs))
 		self.colors = {0: ["Blue", [0,0,1.0,1.0]], 1: ["Green", [0,1.0,0,1.0]]}
@@ -56,22 +56,24 @@ class SOLUTION:
 			self.weights[random.randint(0,numpy.count_nonzero(self.sensors == 1)-1)][random.randint(0,numpy.count_nonzero(self.motors == 1)-1)] = random.random() * 2 - 1
 		
 		if limbChange == 1:
-			for i in range(len(self.limbs)-4, len(self.limbs)):
-				self.limbs.pop(i)
-				self.num_limbs.pop()
-				self.sensors = numpy.delete(self.sensors,-1)
-				self.motors = numpy.delete(self.motors,-1)
+			if len(self.limbs) > 8:
+				for i in range(len(self.limbs)-4, len(self.limbs)):
+					self.limbs.pop(i)
+					self.num_limbs.pop()
+					self.sensors = numpy.delete(self.sensors,-1)
+					self.motors = numpy.delete(self.motors,-1)
 			self.weights = numpy.random.rand(numpy.count_nonzero(self.sensors == 1), numpy.count_nonzero(self.motors == 1))
 			self.weights = self.weights * 2 - 1
 
 		elif limbChange == 2:
-			for i in range(len(self.limbs), len(self.limbs)+4):
-				self.sensors = numpy.append(self.sensors,random.randint(0,1))
-				self.motors = numpy.append(self.motors,random.randint(0,1))
-				self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3 + 0.4, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
-				self.num_limbs.append(i)
-			self.weights = numpy.random.rand(numpy.count_nonzero(self.sensors == 1), numpy.count_nonzero(self.motors == 1))
-			self.weights = self.weights * 2 - 1
+			if len(self.limbs) < 50:
+				for i in range(len(self.limbs), len(self.limbs)+4):
+					self.sensors = numpy.append(self.sensors,random.randint(0,1))
+					self.motors = numpy.append(self.motors,random.randint(0,1))
+					self.limbs[i] = [self.sensors[i], self.motors[i], numpy.random.rand(3) * random.randint(1,2)/3 + 0.4, self.colors[self.sensors[i]][0], self.colors[self.sensors[i]][1]]
+					self.num_limbs.append(i)
+				self.weights = numpy.random.rand(numpy.count_nonzero(self.sensors == 1), numpy.count_nonzero(self.motors == 1))
+				self.weights = self.weights * 2 - 1
 			
 		self.Generate_Body()
 		self.Generate_Brain()
@@ -82,7 +84,6 @@ class SOLUTION:
 
 	def Create_World(self):
 		pyrosim.Start_SDF("world.sdf")
-		pyrosim.Send_Cube(name="Box", pos=[2,-3,0.5] , size=[1,1,1])
 		pyrosim.End()
 
 	def Generate_Body(self):
@@ -92,20 +93,33 @@ class SOLUTION:
 			start_z += self.limbs[i][2][2]
 
 		start_z /= 3
+
+		leg1 = numpy.random.randint(2, size = 3)
+		leg2 = numpy.random.randint(2, size = 3)
+		leg3 = numpy.random.randint(2, size = 3)
+		leg4 = numpy.random.randint(2, size = 3)
+		# leg1 = numpy.array([1,1,1])
+		# leg2 = numpy.array([1,1,1])
+		# leg3 = numpy.array([1,1,1])
+		# leg4 = numpy.array([1,1,1])
 		
 		pyrosim.Start_URDF(f"body{self.myID}.urdf")
 		pyrosim.Send_Cube(name=f"Segment0", pos=[0,0,start_z], size=self.limbs[0][2], color=self.limbs[0][3], colorRGBA=self.limbs[0][4])
-		pyrosim.Send_Joint(name=f"Segment0_Segment1", parent=f"Segment0", child=f"Segment1",  type="revolute", position=[-self.limbs[0][2][0]/2,self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[1][2][2]/2)], jointAxis = "0 1 0")
-		pyrosim.Send_Joint(name=f"Segment0_Segment2", parent=f"Segment0", child=f"Segment2",  type="revolute", position=[-self.limbs[0][2][0]/2,-self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[2][2][2]/2)], jointAxis = "0 1 0")
-		pyrosim.Send_Joint(name=f"Segment0_Segment3", parent=f"Segment0", child=f"Segment3",  type="revolute", position=[self.limbs[0][2][0]/2,-self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[3][2][2]/2)], jointAxis = "0 1 0")
-		pyrosim.Send_Joint(name=f"Segment0_Segment4", parent=f"Segment0", child=f"Segment4",  type="revolute", position=[self.limbs[0][2][0]/2,self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[4][2][2]/2)], jointAxis = "0 1 0")
+		# pyrosim.Send_Joint(name=f"Segment0_Segment1", parent=f"Segment0", child=f"Segment1",  type="revolute", position=[-self.limbs[0][2][0]/2*leg1[0],self.limbs[0][2][1]/2*leg1[1],start_z-(self.limbs[0][2][2]/2)-(self.limbs[1][2][2]/2)*leg1[2]], jointAxis = f"{leg1[0]} {leg1[1]} {leg1[2]}")
+		# pyrosim.Send_Joint(name=f"Segment0_Segment2", parent=f"Segment0", child=f"Segment2",  type="revolute", position=[-self.limbs[0][2][0]/2*leg2[0],-self.limbs[0][2][1]/2*leg2[1],start_z-(self.limbs[0][2][2]/2)-(self.limbs[2][2][2]/2)*leg2[2]], jointAxis = f"{leg2[0]} {leg2[1]} {leg2[2]}")
+		# pyrosim.Send_Joint(name=f"Segment0_Segment3", parent=f"Segment0", child=f"Segment3",  type="revolute", position=[self.limbs[0][2][0]/2*leg3[0],-self.limbs[0][2][1]/2*leg3[1],start_z-(self.limbs[0][2][2]/2)-(self.limbs[3][2][2]/2)*leg3[2]], jointAxis = f"{leg3[0]} {leg3[1]} {leg3[2]}")
+		# pyrosim.Send_Joint(name=f"Segment0_Segment4", parent=f"Segment0", child=f"Segment4",  type="revolute", position=[self.limbs[0][2][0]/2*leg4[0],self.limbs[0][2][1]/2*leg4[1],start_z-(self.limbs[0][2][2]/2)-(self.limbs[4][2][2]/2)*leg4[2]], jointAxis = f"{leg4[0]} {leg4[1]} {leg4[2]}")
+		pyrosim.Send_Joint(name=f"Segment0_Segment1", parent=f"Segment0", child=f"Segment1",  type="revolute", position=[-self.limbs[0][2][0]/2,self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[1][2][2]/2)], jointAxis = f"{leg1[0]} {leg1[1]} {leg1[2]}")
+		pyrosim.Send_Joint(name=f"Segment0_Segment2", parent=f"Segment0", child=f"Segment2",  type="revolute", position=[-self.limbs[0][2][0]/2,-self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[2][2][2]/2)], jointAxis = f"{leg2[0]} {leg2[1]} {leg2[2]}")
+		pyrosim.Send_Joint(name=f"Segment0_Segment3", parent=f"Segment0", child=f"Segment3",  type="revolute", position=[self.limbs[0][2][0]/2,-self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[3][2][2]/2)], jointAxis = f"{leg3[0]} {leg3[1]} {leg3[2]}")
+		pyrosim.Send_Joint(name=f"Segment0_Segment4", parent=f"Segment0", child=f"Segment4",  type="revolute", position=[self.limbs[0][2][0]/2,self.limbs[0][2][1]/2,start_z-(self.limbs[0][2][2]/2)-(self.limbs[4][2][2]/2)], jointAxis = f"{leg4[0]} {leg4[1]} {leg4[2]}")
 		for i in range(1,len(self.num_limbs)-4):
 			if i % 2 == 0:
 				pyrosim.Send_Cube(name=f"Segment{i}", pos=[0,0,0], size=self.limbs[i][2], color=self.limbs[i][3], colorRGBA=self.limbs[i][4])
-				pyrosim.Send_Joint(name=f"Segment{i}_Segment{i+4}", parent=f"Segment{i}", child=f"Segment{i+4}",  type="revolute", position=[self.limbs[i][2][0]/2,-self.limbs[i][2][1]/2,-self.limbs[i][2][2]/2-(self.limbs[i+4][2][2]/2)] * numpy.array([0,0,1]), jointAxis = "0 1 0")
+				pyrosim.Send_Joint(name=f"Segment{i}_Segment{i+4}", parent=f"Segment{i}", child=f"Segment{i+4}",  type="revolute", position=[self.limbs[i][2][0]/2*random.random(),-self.limbs[i][2][1]/2*random.random(),-self.limbs[i][2][2]/2-(self.limbs[i+4][2][2]/2)], jointAxis = "0 1 0")
 			else:
 				pyrosim.Send_Cube(name=f"Segment{i}", pos=[0,0,0], size=self.limbs[i][2], color=self.limbs[i][3], colorRGBA=self.limbs[i][4])
-				pyrosim.Send_Joint(name=f"Segment{i}_Segment{i+4}", parent=f"Segment{i}", child=f"Segment{i+4}",  type="revolute", position=[self.limbs[i][2][0]/2,self.limbs[i][2][1]/2,-self.limbs[i][2][2]/2-(self.limbs[i+4][2][2]/2)] * numpy.array([0,0,1]), jointAxis = "0 1 0")
+				pyrosim.Send_Joint(name=f"Segment{i}_Segment{i+4}", parent=f"Segment{i}", child=f"Segment{i+4}",  type="revolute", position=[self.limbs[i][2][0]/2*random.random(),self.limbs[i][2][1]/2*random.random(),-self.limbs[i][2][2]/2-(self.limbs[i+4][2][2]/2)], jointAxis = "0 1 0")
 		pyrosim.Send_Cube(name=f"Segment{self.num_limbs[-4]}", pos=[0,0,0], size=self.limbs[self.num_limbs[-4]][2], color=self.limbs[self.num_limbs[-4]][3], colorRGBA=self.limbs[self.num_limbs[-4]][4])
 		pyrosim.Send_Cube(name=f"Segment{self.num_limbs[-3]}", pos=[0,0,0], size=self.limbs[self.num_limbs[-3]][2], color=self.limbs[self.num_limbs[-3]][3], colorRGBA=self.limbs[self.num_limbs[-3]][4])
 		pyrosim.Send_Cube(name=f"Segment{self.num_limbs[-2]}", pos=[0,0,0], size=self.limbs[self.num_limbs[-2]][2], color=self.limbs[self.num_limbs[-2]][3], colorRGBA=self.limbs[self.num_limbs[-2]][4])
