@@ -7,6 +7,7 @@ import random
 import time
 import copy
 import os
+import pickle
 import constants as c
 import solution as s
 
@@ -15,7 +16,7 @@ class PARALLEL_HILL_CLIMBER:
 		self.seed = seed
 		os.system("rm brain*.nndf")
 		os.system("rm body*.urdf")
-		os.system("rm fitness*.txt")
+		# os.system("rm fitness*.txt")
 		self.parents = {}
 		self.nextAvailableID = 0
 		self.currentGeneration = 0
@@ -86,6 +87,7 @@ class PARALLEL_HILL_CLIMBER:
 		bestFitness = float("inf")
 		best = None
 		# legend = []
+		print(self.parents[0].fitness)
 		for i in self.parents:
 			if self.parents[i].fitness < bestFitness:
 				best = self.parents[i]
@@ -94,9 +96,13 @@ class PARALLEL_HILL_CLIMBER:
 			# plt.plot(range(c.numberOfGenerations), numpy.linspace(0,max(self.fitnessMatrix[i]), c.numberOfGenerations))
 			# plt.plot(range(c.numberOfGenerations), self.fitnessMatrix[i][:-1])
 			# legend.append(f"Seed {i+1}")
+		
 		with open("fitnesses.npy", "wb") as file:
 			numpy.save("fitnesses.npy", self.fitnessMatrix[:])
+		
 		best.Start_Simulation("GUI")
+		with open(f"best{self.seed}.bin", "wb") as f:
+			pickle.dump(best, f)
 		# plt.xlabel('Generation Number')
 		# plt.ylabel('Fitness')
 		# plt.title('Fitness vs. Generation Number')
