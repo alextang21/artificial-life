@@ -8,6 +8,11 @@ __How to Run__
 
 By running "python3 search.py" will run a new set of simulations using the seeds that associate one run with one seed, and show the robot that has the furthest negative x-coordinate, and will draw out a plot of the fitnesses.
 
+__Video Explanation__
+
+https://youtu.be/HBnu-FKAzuU
+
+
 __GIF!__
 
 ![7ej54y](https://user-images.githubusercontent.com/67122357/225209556-2707933b-330d-4f0d-a4a5-1a5e6b855246.gif)
